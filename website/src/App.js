@@ -58,7 +58,7 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { data: [], min: 9999999999.0, max: -9999999999.0, average: 0.0, stdv: 0.0, variance: 0.0, isReady: false, completed: 0, postNumber: 0, liked: "default" };
+    this.state = { data: [], min: 9999999999.0, max: -9999999999.0, average: 0.0, stdv: 0.0, variance: 0.0, isReady: false, completed: 0, postNumber: 0, liked: "default", reset: 0 };
 
     this.addScript = src => {
       const script = document.createElement("script");
@@ -130,6 +130,14 @@ class App extends Component {
       totalSquareSum += (Math.pow(newData[6][i][1], 2));
       let newavg = totalSum / totalRecords;
       this.setState({ average: newavg });
+      if (this.state.reset == 1) {
+        this.setState({average: 0.0});
+        this.setState({reset: 0});
+        this.setState({variance: 0});
+        totalSum = 0.0;
+        totalRecords = 0.0;
+        totalSquareSum = 0.0;
+      }
   //    console.log("Average:");
   //    console.log(this.state.average);
       let varia = (totalSquareSum / totalRecords) - (Math.pow((totalSum / totalRecords), 2));
@@ -159,7 +167,7 @@ class App extends Component {
 
         <Card className={"cardBar"} >
             <CardContent>
-              <LinearProgress className={"prog1"} variant="determinate" value={this.state.completed}/>
+              <LinearProgress className={"prog1"} variant="determinate" value={this.state.average}/>
             </CardContent>
           </Card>
 
@@ -214,11 +222,11 @@ class App extends Component {
           });
           console.log("Average is " + this.state.average);
           this.setState({
-            totalRecords : 0.0,
-            totalSquareSum : 0.0,
-            totalSum : 0.0,
-            average : 0.0
+            reset : 1
           });
+          totalSum = 0.0;
+          totalRecords = 0.0;
+          totalSquareSum = 0.0;
         }}>
           <AddIcon/>
             Next Post

@@ -17,7 +17,7 @@ var Server = function(browserPort) {
   this.buffer = [];
   this.channels = {};
   this.SECONDS = 0.25;
-  this.sampleRate = 256;
+  this.sampleRate = 16;
   this.BUFFER_SIZE = this.SECONDS * this.sampleRate;
 };
 
