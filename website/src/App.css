@@ -74,3 +74,10 @@
 .like{
   transform: scale(2);
 }
+
+.value{
+  font-size: 20;
+  align-self: flex-end;
+  text-align: end;
+  font-style: oblique;
+}

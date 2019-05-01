@@ -3,7 +3,6 @@ import "./App.css";
 import styled from "styled-components";
 import Card from '@material-ui/core/Card';
 import Button from '@material-ui/core/Button';
-import LineGraph from "./components/linegraph";
 import Client from "./client";
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
@@ -34,11 +33,19 @@ var totalSquareSum = 0.0;
 var totalRecords = 0.0;
 var dataSample = [];
 const usernames = [
+  "",
+  "",
+  "",
+  "",
   "alexramsayer",
   "chrislong",
   "spencerfuhriman",
   "liamcypel"];
 const postText = [
+  "",
+  "",
+  "",
+  "",
 "had a great day today",
 "I made some clockarooni sandwiches, you want some?",
 "Can't believe I had to eat papa john's instead of little caesars",
@@ -75,12 +82,8 @@ class App extends Component {
   }
 
   componentDidMount() {
-    // BCIDevice.pack
-
-    this.timer = setInterval(this.progress, 500);
 
     if (typeof document !== "undefined") {
-      Plot = require("plotly.js-basic-dist");
       console.log("Plot", Plot);
       this.setState({ isReady: true });
     }
@@ -98,16 +101,6 @@ class App extends Component {
     this.addScript("https://cdn.jsdelivr.net/npm/bcijs@1.5.2/dist/bci.min.js");
   }
 
-
-  progress = () => {
-    const { completed } = this.state;
-    if (completed === 100) {
-      this.setState({ completed: 0 });
-    } else {
-      const diff = Math.random() * 10;
-      this.setState({ completed: Math.min(50-diff, 100) });
-    }
-  };
 
 
   updateData = recentData => {      //calculates statistical data before passing it along
@@ -195,6 +188,10 @@ class App extends Component {
               <Typography component="p">
                 {postText[this.state.postNumber]}
               </Typography>
+
+              <Typography className={"value"}>
+                {this.state.average}
+              </Typography>
             </CardContent>
             <CardActions disableActionSpacing>
               <IconButton className={"like"} aria-label="Add to favorites" color={this.state.liked}>
@@ -209,7 +206,7 @@ class App extends Component {
 
 
         <Fab className={"fab"} variant="extended" aria-label="Next Post" onClick={() => {
-          if (this.state.postNumber == 3){
+          if (this.state.postNumber === 7){
             this.setState({postNumber: 0});
           }
           else {
