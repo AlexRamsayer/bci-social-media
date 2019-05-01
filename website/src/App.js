@@ -121,24 +121,24 @@ class App extends Component {
       if (n < this.state.min){
         this.setState({min: n});
       }
-      console.log("Min:");
-      console.log(this.state.min);
-      console.log("Max:");
-      console.log(this.state.max);
-      console.log(n);
+  //    console.log("Min:");
+  //    console.log(this.state.min);
+    //  console.log("Max:");
+    //  console.log(this.state.max);
+      //console.log(n);
       totalSum += n;
       totalSquareSum += (Math.pow(newData[6][i][1], 2));
       let newavg = totalSum / totalRecords;
       this.setState({ average: newavg });
-      console.log("Average:");
-      console.log(this.state.average);
+  //    console.log("Average:");
+  //    console.log(this.state.average);
       let varia = (totalSquareSum / totalRecords) - (Math.pow((totalSum / totalRecords), 2));
       this.setState({variance: varia})
-      console.log("Variance:");
-      console.log(this.state.variance);
+  //    console.log("Variance:");
+  //    console.log(this.state.variance);
       this.setState({stdv: Math.sqrt(varia)})
-      console.log("Standard Deviation:");
-      console.log(this.state.stdv);
+  //    console.log("Standard Deviation:");
+  //    console.log(this.state.stdv);
     }
     //newData[6] contains the Gamma data [timestamp, value]
     //newData[6].length = 65
@@ -187,9 +187,6 @@ class App extends Component {
               <Typography component="p">
                 {postText[this.state.postNumber]}
               </Typography>
-              <Typography component="p">
-                {postText[this.state.average]}
-              </Typography>
             </CardContent>
             <CardActions disableActionSpacing>
               <IconButton className={"like"} aria-label="Add to favorites" color={this.state.liked}>
@@ -204,11 +201,23 @@ class App extends Component {
 
 
         <Fab className={"fab"} variant="extended" aria-label="Next Post" onClick={() => {
-          this.setState({
-            postNumber : this.state.postNumber + 1
-          });
+          if (this.state.postNumber == 3){
+            this.setState({postNumber: 0});
+          }
+          else {
+            this.setState({
+              postNumber : this.state.postNumber + 1
+            });
+          }
           this.setState({
             liked : "default"
+          });
+          console.log("Average is " + this.state.average);
+          this.setState({
+            totalRecords : 0.0,
+            totalSquareSum : 0.0,
+            totalSum : 0.0,
+            average : 0.0
           });
         }}>
           <AddIcon/>
@@ -262,23 +271,8 @@ class App extends Component {
               console.log("stop");}}>
             Stop
           </Button>
-          <Button
-            variant="contained"
-            style={{ margin: "10px", height: "50px", width: "100px" }}
-            onClick={() => {
-              totalSum = 0.0;
-              totalSquareSum = 0.0;
-              totalRecords = 0.0;
-              this.setState({average: 0.0});
-              console.log("reset");}}>
-            Reset
-          </Button>
 
           </Section>
-
-        <Section direction={"row"} height={"auto"}>
-          <LineGraph channel={2} data={this.state.data} range={200} />
-        </Section>
 
       </Section>
     );
