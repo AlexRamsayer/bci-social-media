@@ -65,7 +65,7 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { data: [], min: 9999999999.0, max: -9999999999.0, average: 0.0, stdv: 0.0, variance: 0.0, isReady: false, completed: 0, postNumber: 0, liked: "default", reset: 0 };
+    this.state = { data: [], min: 0, max: 0.1, average: 0.0, stdv: 0.0, variance: 0.0, isReady: false, completed: 0, postNumber: 0, liked: "default", reset: 0, score: 0, lastaverage: 0 };
 
     this.addScript = src => {
       const script = document.createElement("script");
@@ -101,19 +101,26 @@ class App extends Component {
     this.addScript("https://cdn.jsdelivr.net/npm/bcijs@1.5.2/dist/bci.min.js");
   }
 
-
+  getScoreValue() {
+    var display = 0;
+    var value = this.state.average;
+    if (value > this.state.max) {
+      display = 100;  
+    }
+    else if (value < this.state.min) {
+      display = 0;
+    }
+    else {
+      display = ((value - this.state.min) / (this.state.max - this.state.min)) * 100;
+    }
+    this.setState({score: display})
+  }
 
   updateData = recentData => {      //calculates statistical data before passing it along
     const newData = recentData;
     for (var i = 0; i < newData[6].length; i++){
       let n = newData[6][i][1];
       totalRecords += (i + 1);
-      if (n > this.state.max){
-        this.setState({max: n});
-      }
-      if (n < this.state.min){
-        this.setState({min: n});
-      }
   //    console.log("Min:");
   //    console.log(this.state.min);
     //  console.log("Max:");
@@ -140,6 +147,7 @@ class App extends Component {
       this.setState({stdv: Math.sqrt(varia)})
   //    console.log("Standard Deviation:");
   //    console.log(this.state.stdv);
+      this.getScoreValue();
     }
     //newData[6] contains the Gamma data [timestamp, value]
     //newData[6].length = 65
@@ -160,7 +168,7 @@ class App extends Component {
 
         <Card className={"cardBar"} >
             <CardContent>
-              <LinearProgress className={"prog1"} variant="determinate" value={this.state.average}/>
+              <LinearProgress className={"prog1"} variant="determinate" value={this.state.score}/>
             </CardContent>
           </Card>
 
@@ -190,7 +198,7 @@ class App extends Component {
               </Typography>
 
               <Typography className={"value"}>
-                {this.state.average}
+                {this.state.score}
               </Typography>
             </CardContent>
             <CardActions disableActionSpacing>
@@ -206,6 +214,13 @@ class App extends Component {
 
 
         <Fab className={"fab"} variant="extended" aria-label="Next Post" onClick={() => {
+          if (this.state.postNumber == 1) {
+            var initMax = this.state.average + 1;
+            var initMin = this.state.average - 1;
+            if (this.state.average < 1) initMin = 0;
+            this.setState({max : initMax});
+            this.setState({min: initMin});
+          }
           if (this.state.postNumber === 7){
             this.setState({postNumber: 0});
           }
@@ -218,12 +233,24 @@ class App extends Component {
             liked : "default"
           });
           console.log("Average is " + this.state.average);
+          console.log("Score is " + this.state.score);
           this.setState({
             reset : 1
           });
           totalSum = 0.0;
           totalRecords = 0.0;
           totalSquareSum = 0.0;
+          this.setState({lastaverage: this.state.average});
+
+          if (this.state.lastaverage > this.state.max) {
+            this.setState({max: this.state.lastaverage});
+          }
+          if (this.state.lastaverage < this.state.min) {
+            this.setState({min: this.state.lastaverage});
+          }
+          console.log("Max is " + this.state.max);
+          console.log("Min is " + this.state.min);
+
         }}>
           <AddIcon/>
             Next Post
