@@ -187,6 +187,9 @@ class App extends Component {
               <Typography component="p">
                 {postText[this.state.postNumber]}
               </Typography>
+              <Typography component="p">
+                {postText[this.state.average]}
+              </Typography>
             </CardContent>
             <CardActions disableActionSpacing>
               <IconButton className={"like"} aria-label="Add to favorites" color={this.state.liked}>
@@ -258,6 +261,17 @@ class App extends Component {
               this.client.stop();
               console.log("stop");}}>
             Stop
+          </Button>
+          <Button
+            variant="contained"
+            style={{ margin: "10px", height: "50px", width: "100px" }}
+            onClick={() => {
+              totalSum = 0.0;
+              totalSquareSum = 0.0;
+              totalRecords = 0.0;
+              this.setState({average: 0.0});
+              console.log("reset");}}>
+            Reset
           </Button>
 
           </Section>
