@@ -105,10 +105,10 @@ class App extends Component {
     var display = 0;
     var value = this.state.average;
     if (value > this.state.max) {
-      display = 100;  
+      display = 90;  
     }
     else if (value < this.state.min) {
-      display = 0;
+      display = 10;
     }
     else {
       display = ((value - this.state.min) / (this.state.max - this.state.min)) * 100;
@@ -193,16 +193,20 @@ class App extends Component {
               <Typography color="textSecondary" gutterBottom>
                 Post Description
               </Typography>
-              <Typography component="p">
-                {postText[this.state.postNumber]}
-              </Typography>
+              
+              
 
+              <Typography >
+                {postText[this.state.postNumber]}
+               </Typography>
+               
+              <Card> 
+                <CardContent className={"innerScore"} >
               <Typography className={"value"}>
                 {this.state.score}
-              <Typography className={"value"} >
-                {this.state.average}
->>>>>>> Stashed changes
               </Typography>
+              </CardContent>
+              </Card>
             </CardContent>
             <CardActions disableActionSpacing>
               <IconButton className={"like"} aria-label="Add to favorites" color={this.state.liked}>
@@ -272,7 +276,6 @@ class App extends Component {
         </Fab>
 
 
-
         </Section>
 
 
@@ -310,6 +313,7 @@ class App extends Component {
           </Section>
 
       </Section>
+
     );
   }
 }
