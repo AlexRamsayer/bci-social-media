@@ -197,10 +197,8 @@ class App extends Component {
                 {postText[this.state.postNumber]}
               </Typography>
 
-<<<<<<< Updated upstream
               <Typography className={"value"}>
                 {this.state.score}
-=======
               <Typography className={"value"} >
                 {this.state.average}
 >>>>>>> Stashed changes
